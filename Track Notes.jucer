@@ -10,7 +10,7 @@
               pluginCode="Note" pluginChannelConfigs="" pluginIsSynth="0" pluginWantsMidiIn="0"
               pluginProducesMidiOut="0" pluginIsMidiEffectPlugin="0" pluginEditorRequiresKeys="1"
               pluginAUExportPrefix="TrackNotesAU" pluginRTASCategory="" aaxIdentifier="com.TheLyonsDen.TrackNotes"
-              pluginAAXCategory="2" jucerVersion="5.4.4" companyEmail="JosephTLyons@gmail.com"
+              pluginAAXCategory="2" jucerVersion="5.4.7" companyEmail="JosephTLyons@gmail.com"
               companyName="The Lyons Den" pluginFormats="buildAU,buildAUv3,buildVST,buildVST3"
               pluginCharacteristicsValue="pluginEditorRequiresKeys" cppLanguageStandard="17">
   <MAINGROUP id="t5b0Im" name="Track Notes">
@@ -29,7 +29,6 @@
       <FILE id="Z2U2YR" name="ImageWindow.cpp" compile="1" resource="0" file="Source/ImageWindow.cpp"/>
       <FILE id="aI7fmO" name="StaticTextSizeButton.hpp" compile="0" resource="0"
             file="Source/StaticTextSizeButton.hpp"/>
-      <FILE id="ZqbPSI" name="XMLKeyNames.hpp" compile="0" resource="0" file="Source/XMLKeyNames.hpp"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Projucer version: 5.4.4
+  Created with Projucer version: 5.4.7
 
   ------------------------------------------------------------------------------
 
@@ -45,7 +45,7 @@ class TrackNotesAudioProcessorEditor  : public AudioProcessorEditor,
 public:
     //==============================================================================
     TrackNotesAudioProcessorEditor (TrackNotesAudioProcessor &p);
-    ~TrackNotesAudioProcessorEditor();
+    ~TrackNotesAudioProcessorEditor() override;
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
