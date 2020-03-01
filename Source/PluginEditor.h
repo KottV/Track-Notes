@@ -88,8 +88,7 @@ private:
     String formatTimeInterval (const int &timeInterval);
     void createImagePreviews();
     void scaleImageDimensionsIfTooLarge (int &imageWidtht, int &imageHeight);
-    void activateStealthMode();
-    void deactivateStealthMode();
+    void setStealthModeState (const bool& isActivated);
     void hideTextAndDisableEditor (TextEditor &textEditor);
     void showTextAndEnableEditor (TextEditor &textEditor);
     void setFocusTabOrder();
