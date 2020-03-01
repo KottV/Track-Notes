@@ -38,11 +38,6 @@ TrackNotesAudioProcessor::TrackNotesAudioProcessor()
                        )
 #endif
 {
-    // Initialize to false for first use after upgrading
-    // Since XML attribute isn't present upon first opening
-    // the initalized value in unpredictable
-    // so give it false before trying to get it from XML
-    stealthIsActivated = false;
 }
 
 TrackNotesAudioProcessor::~TrackNotesAudioProcessor()
@@ -207,7 +202,7 @@ void TrackNotesAudioProcessor::setStateInformation (const void* data, int sizeIn
             instrumentPlayedLabelString = xml->getStringAttribute (XMLKeyNames::instrumentPlayedLabel);
             microphonesUsedLabelString = xml->getStringAttribute (XMLKeyNames::microphonesUsedLabel);
             
-            stealthIsActivated = xml->getIntAttribute (XMLKeyNames::stealthIsActivated);
+            stealthIsActivated = xml->getBoolAttribute (XMLKeyNames::stealthIsActivated, false);
             
             // Retrieve paths to images
             if (imageOnePath.exists())
