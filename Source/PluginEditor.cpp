@@ -794,7 +794,8 @@ void TrackNotesAudioProcessorEditor::setStealthModeState (const bool& isActivate
 
 void TrackNotesAudioProcessorEditor::hideTextAndDisableEditor (TextEditor &textEditor)
 {
-    String tempTextHolder = String::repeatedString ("\n", 10) + textEditor.getText();
+    unsigned int numberOfLinesVisibleInEditor = (textEditor.getHeight() / textEditor.getFont().getHeight());
+    String tempTextHolder = String::repeatedString ("\n", numberOfLinesVisibleInEditor + 1) + textEditor.getText();
 
     textEditor.setText (tempTextHolder, dontSendNotification);
     textEditor.moveCaretToTop (false);
