@@ -792,7 +792,7 @@ void TrackNotesAudioProcessorEditor::activateStealthMode()
 
 void TrackNotesAudioProcessorEditor::hideTextAndDisableEditor (TextEditor &textEditor)
 {
-    String tempTextHolder = "\n\n\n\n\n\n\n\n\n\n" + textEditor.getText();
+    String tempTextHolder = String::repeatedString("\n", 10) + textEditor.getText();
 
     textEditor.setText (tempTextHolder, dontSendNotification);
     textEditor.moveCaretToTop (false);
