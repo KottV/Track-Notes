@@ -295,7 +295,7 @@ TrackNotesAudioProcessorEditor::TrackNotesAudioProcessorEditor (TrackNotesAudioP
 
     //[Constructor] You can add your own custom stuff here..
 
-        // Set up text editor font sizes
+    // Set up text editor font sizes
     const int fontSize = 20;
 
     performersNameEditor->setFont (fontSize);
