@@ -715,24 +715,12 @@ String TrackNotesAudioProcessorEditor::formatAndBuildTimecode (const int &hours,
         tempString += "\n";
 
     tempString += "@ ";
-    tempString += formatTimeInterval (hours);
+    tempString += String (hours).paddedLeft ('0', 2);
     tempString += ":";
-    tempString += formatTimeInterval (minutes);
+    tempString += String (minutes).paddedLeft ('0', 2);
     tempString += ":";
-    tempString += formatTimeInterval (seconds);
+    tempString += String (seconds).paddedLeft ('0', 2);
     tempString += " - ";
-
-    return tempString;
-}
-
-String TrackNotesAudioProcessorEditor::formatTimeInterval (const int &timeInterval)
-{
-    String tempString;
-
-    if (timeInterval < 10)
-        tempString += "0";
-
-    tempString += timeInterval;
 
     return tempString;
 }
