@@ -741,8 +741,9 @@ void TrackNotesAudioProcessorEditor::scaleImageDimensionsIfTooLarge (int &imageW
                                                                      int &imageHeight)
 {
     // Get desktop dimensions
-    int screenWidth  = Desktop::getInstance().getDisplays().getMainDisplay().totalArea.getWidth();
-    int screenHeight = Desktop::getInstance().getDisplays().getMainDisplay().totalArea.getHeight();
+    Rectangle<int> totalArea = Desktop::getInstance().getDisplays().getMainDisplay().totalArea;
+    int screenWidth  = totalArea.getWidth();
+    int screenHeight = totalArea.getHeight();
 
     // Trim vertically and horizontally to account for docks, taskbars, menus, and whatnot
     screenWidth  -= 100;
