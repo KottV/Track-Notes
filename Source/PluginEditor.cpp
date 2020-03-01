@@ -345,7 +345,7 @@ TrackNotesAudioProcessorEditor::TrackNotesAudioProcessorEditor (TrackNotesAudioP
     // Turn button into a toggle button
     stealthModeToggle->setClickingTogglesState (true);
 
-    if (processor.stealthIsActivated)
+    if (stealthModeToggle->getToggleState())
     {
         activateStealthMode();
         stealthModeToggle->setToggleState (true, dontSendNotification);
@@ -785,8 +785,6 @@ void TrackNotesAudioProcessorEditor::scaleImageDimensionsIfTooLarge (int &imageW
 
 void TrackNotesAudioProcessorEditor::activateStealthMode()
 {
-    processor.stealthIsActivated = true;
-
     hideTextAndDisableEditor (*timestampedNotesEditor);
     hideTextAndDisableEditor (*generalNotesEditor);
 
@@ -806,8 +804,6 @@ void TrackNotesAudioProcessorEditor::hideTextAndDisableEditor (TextEditor &textE
 
 void TrackNotesAudioProcessorEditor::deactivateStealthMode()
 {
-    processor.stealthIsActivated = false;
-
     showTextAndEnableEditor (*timestampedNotesEditor);
     showTextAndEnableEditor (*generalNotesEditor);
 
@@ -891,6 +887,7 @@ void TrackNotesAudioProcessorEditor::getDataFromProcessor()
     microphonesUsedLabel->setText (processor.microphonesUsedLabelString, dontSendNotification);
 
     // Buttons
+    stealthModeToggle->setToggleState(processor.stealthIsActivated, dontSendNotification);
 }
 
 void TrackNotesAudioProcessorEditor::saveDataToProcessor()
@@ -913,6 +910,7 @@ void TrackNotesAudioProcessorEditor::saveDataToProcessor()
     processor.microphonesUsedLabelString = microphonesUsedLabel->getText();
 
     // Buttons
+    processor.stealthIsActivated = stealthModeToggle->getToggleState();
 }
 
 void TrackNotesAudioProcessorEditor::labelTextChanged (Label* labelThatHasChanged)
