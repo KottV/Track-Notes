@@ -484,7 +484,6 @@ void TrackNotesAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked
         {
             if (! processor.imageOnePath.exists())
                 showErrorLoadingImageWindow (processor.imageOnePath.getFullPathName());
-
             else
                 createImageWindow (basicWindowImageOnePtr, processor.imageOne, processor.imageOnePath);
         }
@@ -499,7 +498,6 @@ void TrackNotesAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked
         {
             if (! processor.imageTwoPath.exists())
                 showErrorLoadingImageWindow (processor.imageTwoPath.getFullPathName());
-
             else
                 createImageWindow (basicWindowImageTwoPtr, processor.imageTwo, processor.imageTwoPath);
         }
@@ -568,7 +566,6 @@ void TrackNotesAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked
 
         if (stealthModeToggle->getToggleState())
             activateStealthMode();
-
         else
             deactivateStealthMode();
 
@@ -585,7 +582,6 @@ void TrackNotesAudioProcessorEditor::mouseMove (const MouseEvent& e)
 
     if (stealthModeToggle->isMouseOver())
         stealthModeToggle->setButtonText ("Stealth");
-
     else
         stealthModeToggle->setButtonText ("");
 
@@ -605,7 +601,6 @@ void TrackNotesAudioProcessorEditor::setupVersionNumberlabel()
 
     if (isRunningInDemoMode)
         versionNumberString += " - Demo Version";
-
     else
         versionNumberString += " - Full Version";
 
@@ -671,14 +666,12 @@ void TrackNotesAudioProcessorEditor::createImageWindow (SafePointer<BasicWindow>
             basicWindowPtr->setSize (width, height);
             basicWindowPtr->centreWithSize (width, height);
         }
-
         // This should never occur, as this function is not even called when the image doesn't exist
         else
             basicWindowPtr->centreWithSize (basicWindowPtr->getWidth(), basicWindowPtr->getHeight());
 
         basicWindowPtr->setVisible (true);
     }
-
     // If window is open already and display button is clicked again, window will be deleted
     else
         delete basicWindowPtr;
@@ -777,7 +770,6 @@ void TrackNotesAudioProcessorEditor::scaleImageDimensionsIfTooLarge (int &imageW
         imageWidth = screenWidth;
         imageHeight *= imageAspectRatio;
     }
-
     else
     {
         float imageAspectRatio = screenHeight / (float) imageHeight;
@@ -870,16 +862,12 @@ void TrackNotesAudioProcessorEditor::timerCallback()
 
     if (randomNumber == 0)
         performersNameEditor->setText (demoText);
-
     else if (randomNumber == 1)
         instrumentPlayedEditor->setText (demoText);
-
     else if (randomNumber == 2)
         microphonesUsedEditor->setText (demoText);
-
     else if (randomNumber == 3)
         timestampedNotesEditor->setText (demoText);
-
     else
         generalNotesEditor->setText (demoText);
 }
