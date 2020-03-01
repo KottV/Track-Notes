@@ -22,6 +22,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "XMLKeyNames.hpp"
 
 
 //==============================================================================
@@ -159,24 +160,24 @@ AudioProcessorEditor* TrackNotesAudioProcessor::createEditor()
 void TrackNotesAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
     // Create an outer XML element..
-    XmlElement xml ("trackNotes");
+    XmlElement xml (XMLKeyNames::name);
     
     // add some attributes to it..
     // Also, trim text of editors to keep from saving newlines that may be added during stealth mode
-    xml.setAttribute ("performersName", performersNameString);
-    xml.setAttribute ("instrumentPlayed", instrumentPlayedString);
-    xml.setAttribute ("microphonesUsed", microphonesUsedString);
-    xml.setAttribute ("timestampedNotes", timestampedNotesString.trim());
-    xml.setAttribute ("generalNotes", generalNotesString.trim());
+    xml.setAttribute (XMLKeyNames::performersName, performersNameString);
+    xml.setAttribute (XMLKeyNames::instrumentPlayed, instrumentPlayedString);
+    xml.setAttribute (XMLKeyNames::microphonesUsed, microphonesUsedString);
+    xml.setAttribute (XMLKeyNames::timestampedNotes, timestampedNotesString.trim());
+    xml.setAttribute (XMLKeyNames::generalNotes, generalNotesString.trim());
 
-    xml.setAttribute ("imageOnePath", imageOnePath.getFullPathName());
-    xml.setAttribute ("imageTwoPath", imageTwoPath.getFullPathName());
+    xml.setAttribute (XMLKeyNames::imageOnePath, imageOnePath.getFullPathName());
+    xml.setAttribute (XMLKeyNames::imageTwoPath, imageTwoPath.getFullPathName());
 
-    xml.setAttribute ("performersNameLabel", performersNameLabelString);
-    xml.setAttribute ("instrumentPlayedLabel", instrumentPlayedLabelString);
-    xml.setAttribute ("microphonesUsedLabel", microphonesUsedLabelString);
+    xml.setAttribute (XMLKeyNames::performersNameLabel, performersNameLabelString);
+    xml.setAttribute (XMLKeyNames::instrumentPlayedLabel, instrumentPlayedLabelString);
+    xml.setAttribute (XMLKeyNames::microphonesUsedLabel, microphonesUsedLabelString);
 
-    xml.setAttribute ("stealthIsActivated", stealthIsActivated);
+    xml.setAttribute (XMLKeyNames::stealthIsActivated, stealthIsActivated);
 
     // Use this helper function to stuff it into the binary blob and return it..
     copyXmlToBinary (xml, destData);
@@ -190,23 +191,23 @@ void TrackNotesAudioProcessor::setStateInformation (const void* data, int sizeIn
     if (xml != nullptr)
     {
         // Make sure that it's the correct XML file
-        if (xml->hasTagName ("trackNotes"))
+        if (xml->hasTagName (XMLKeyNames::name))
         {
             // Retrieve editor strings
-            performersNameString = xml->getStringAttribute ("performersName");
-            instrumentPlayedString = xml->getStringAttribute ("instrumentPlayed");
-            microphonesUsedString = xml->getStringAttribute ("microphonesUsed");
-            timestampedNotesString = xml->getStringAttribute ("timestampedNotes");
-            generalNotesString = xml->getStringAttribute ("generalNotes");
+            performersNameString = xml->getStringAttribute (XMLKeyNames::performersName);
+            instrumentPlayedString = xml->getStringAttribute (XMLKeyNames::instrumentPlayed);
+            microphonesUsedString = xml->getStringAttribute (XMLKeyNames::microphonesUsed);
+            timestampedNotesString = xml->getStringAttribute (XMLKeyNames::timestampedNotes);
+            generalNotesString = xml->getStringAttribute (XMLKeyNames::generalNotes);
 
-            imageOnePath = xml->getStringAttribute ("imageOnePath");
-            imageTwoPath = xml->getStringAttribute ("imageTwoPath");
+            imageOnePath = xml->getStringAttribute (XMLKeyNames::imageOnePath);
+            imageTwoPath = xml->getStringAttribute (XMLKeyNames::imageTwoPath);
 
-            performersNameLabelString = xml->getStringAttribute ("performersNameLabel");
-            instrumentPlayedLabelString = xml->getStringAttribute ("instrumentPlayedLabel");
-            microphonesUsedLabelString = xml->getStringAttribute ("microphonesUsedLabel");
+            performersNameLabelString = xml->getStringAttribute (XMLKeyNames::performersNameLabel);
+            instrumentPlayedLabelString = xml->getStringAttribute (XMLKeyNames::instrumentPlayedLabel);
+            microphonesUsedLabelString = xml->getStringAttribute (XMLKeyNames::microphonesUsedLabel);
             
-            stealthIsActivated = xml->getIntAttribute ("stealthIsActivated");
+            stealthIsActivated = xml->getIntAttribute (XMLKeyNames::stealthIsActivated);
             
             // Retrieve paths to images
             if (imageOnePath.exists())

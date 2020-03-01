@@ -29,6 +29,7 @@
       <FILE id="Z2U2YR" name="ImageWindow.cpp" compile="1" resource="0" file="Source/ImageWindow.cpp"/>
       <FILE id="aI7fmO" name="StaticTextSizeButton.hpp" compile="0" resource="0"
             file="Source/StaticTextSizeButton.hpp"/>
+      <FILE id="EM5t7O" name="XMLKeyNames.hpp" compile="0" resource="0" file="Source/XMLKeyNames.hpp"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
