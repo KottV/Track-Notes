@@ -24,6 +24,7 @@
 #include "StaticTextSizeButton.hpp"
 #include "PluginProcessor.h"
 #include "BasicWindow.cpp"
+#include "TimestampContainerWidget.h"
 //[/Headers]
 
 
@@ -72,6 +73,7 @@ private:
     SafePointer<BasicWindow> basicWindowImageTwoPtr;
 
     std::unique_ptr<StaticTextSizeButton> staticTextSizeButtonPtr;
+    std::unique_ptr<TimestampContainerWidget> timestampContainerWidgetPtr;
 
     TooltipWindow toolTipWindow;
 
@@ -83,9 +85,6 @@ private:
     void loadImage (Image &image, File &imagePath, const bool &isImageOne);
     void createImageWindow (SafePointer<BasicWindow> &basicWindowPtr, Image &image, File &imagePath);
     void showErrorLoadingImageWindow (const String &path);
-    void fillTimeIntervalValues (int &hours, int &minutes, int &seconds);
-    String formatAndBuildTimecode (const int &hours, const int &minutes, const int &seconds);
-    String formatTimeInterval (const int &timeInterval);
     void createImagePreviews();
     void scaleImageDimensionsIfTooLarge (int &imageWidtht, int &imageHeight);
     void setStealthModeState (const bool& isActivated);

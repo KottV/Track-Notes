@@ -341,6 +341,11 @@ TrackNotesAudioProcessorEditor::TrackNotesAudioProcessorEditor (TrackNotesAudioP
     displayImageTwoButton->setLookAndFeel (staticTextSizeButtonPtr.get());
     removeImageTwoButton->setLookAndFeel (staticTextSizeButtonPtr.get());
 
+    timestampContainerWidgetPtr.reset (new TimestampContainerWidget);
+    addAndMakeVisible (timestampContainerWidgetPtr.get());
+    
+    timestampContainerWidgetPtr->setBounds (0, 200, 500, 175);
+
     // Set up stealth mode
     // Turn button into a toggle button
     stealthModeToggle->setClickingTogglesState (true);
@@ -396,6 +401,7 @@ TrackNotesAudioProcessorEditor::~TrackNotesAudioProcessorEditor()
     //[Destructor]. You can add your own custom destruction code here..
 
     staticTextSizeButtonPtr = nullptr;
+    timestampContainerWidgetPtr = nullptr;
 
     //[/Destructor]
 }
@@ -454,21 +460,7 @@ void TrackNotesAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked
     {
         //[UserButtonCode_insertTimeStampButton] -- add your button handler code here..
 
-        int hours, minutes, seconds;
-
-        fillTimeIntervalValues (hours, minutes, seconds);
-
-        // Copy current text from the timestamped notes editor
-        String tempTextEditorString = timestampedNotesEditor->getText();
-
-        tempTextEditorString += formatAndBuildTimecode (hours, minutes, seconds);
-
-        timestampedNotesEditor->setText (tempTextEditorString);
-
-        // Put editor into focus and then move caret to end,
-        // Which is where new timestamp has been inserted
-        timestampedNotesEditor->grabKeyboardFocus();
-        timestampedNotesEditor->moveCaretToEnd();
+        timestampContainerWidgetPtr->addTimestampWidget (processor.positionInformation.timeInSeconds);
 
         //[/UserButtonCode_insertTimeStampButton]
     }
@@ -678,63 +670,6 @@ void TrackNotesAudioProcessorEditor::showErrorLoadingImageWindow (const String &
     AlertWindow::showMessageBox (AlertWindow::WarningIcon,
                                  "Image Missing: ",
                                  path + "\n\nPlease load image again.");
-}
-
-void TrackNotesAudioProcessorEditor::fillTimeIntervalValues (int &hours, int &minutes, int &seconds)
-{
-    // Convert time into hours, minutes, and seconds
-    int totalSeconds = processor.positionInformation.timeInSeconds;
-
-    const int secondsPerHour   = 3600;
-    const int secondsPerMinute = 60;
-
-    // Calculate hours
-    hours = totalSeconds / secondsPerHour;
-
-    // Deduct hours (in seconds) from total
-    totalSeconds -= (hours * secondsPerHour);
-
-    // Calculate minutes
-    minutes = totalSeconds / secondsPerMinute;
-
-    // Deduct minutes (in seconds) from total
-    totalSeconds -= (minutes * secondsPerMinute);
-
-    // Leftover is seconds
-    seconds = totalSeconds;
-}
-
-String TrackNotesAudioProcessorEditor::formatAndBuildTimecode (const int &hours,
-                                                               const int &minutes,
-                                                               const int &seconds)
-{
-    String tempString;
-
-    // Don't insert newline on first timestamp
-    if (! timestampedNotesEditor->isEmpty())
-        tempString += "\n";
-
-    tempString += "@ ";
-    tempString += formatTimeInterval (hours);
-    tempString += ":";
-    tempString += formatTimeInterval (minutes);
-    tempString += ":";
-    tempString += formatTimeInterval (seconds);
-    tempString += " - ";
-
-    return tempString;
-}
-
-String TrackNotesAudioProcessorEditor::formatTimeInterval (const int &timeInterval)
-{
-    String tempString;
-
-    if (timeInterval < 10)
-        tempString += "0";
-
-    tempString += timeInterval;
-
-    return tempString;
 }
 
 void TrackNotesAudioProcessorEditor::scaleImageDimensionsIfTooLarge (int &imageWidth,
