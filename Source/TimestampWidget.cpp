@@ -69,7 +69,8 @@ void TimestampWidget::resized()
     fb.items
         .add (FlexItem (*removeTimestampButtonPtr)
         .withFlex (FLEX_VALUE)
-        .withMaxHeight (getHeight()).withMaxWidth (getWidth() / 8));
+        .withMaxHeight (getHeight())
+        .withMaxWidth (getWidth() / 8));
 
     fb.justifyContent = FlexBox::JustifyContent::spaceAround;
     fb.performLayout (getLocalBounds().toFloat());
