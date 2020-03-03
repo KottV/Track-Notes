@@ -61,7 +61,7 @@ void TimestampWidget::resized()
         .add (FlexItem (*timestampLabelPtr)
         .withFlex (FLEX_VALUE)
         .withMaxHeight (getHeight())
-        .withMaxWidth (getWidth() * (3.0 / 16.0)));
+        .withMaxWidth (getWidth() * (5.0 / 32.0)));
     fb.items
         .add (FlexItem (*timestampNotesPtr)
         .withFlex (FLEX_VALUE)
