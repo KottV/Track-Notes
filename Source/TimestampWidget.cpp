@@ -15,7 +15,6 @@
 //==============================================================================
 TimestampWidget::TimestampWidget (const double& timeInSeconds)
     : timecode (timeInSeconds)
-//      shouldDeleteTimestamp (false)
 {
     timestampLabelPtr.reset (new Label ("timestampLabel", timecode.getTimecodeString()));
     timestampNotesPtr.reset (new TextEditor);
@@ -80,13 +79,9 @@ void TimestampWidget::buttonClicked (Button* buttonThatWasClicked)
 {
     if (buttonThatWasClicked == removeTimestampButtonPtr.get())
     {
-        shouldDeleteTimestamp = true;
-        findParentComponentOfClass<TimestampContainerWidget>()->resized();
-//        delete this;
+        MessageManager::callAsync ([this]
+        {
+            findParentComponentOfClass<TimestampContainerWidget>()->deleteChild (this);
+        });
     }
-}
-
-bool TimestampWidget::getShouldDeleteTimestamp()
-{
-    return shouldDeleteTimestamp;
 }

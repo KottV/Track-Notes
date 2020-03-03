@@ -20,7 +20,6 @@ class TimestampContainerWidget    : public Component
 {
 public:
     TimestampContainerWidget();
-    TimestampContainerWidget (const std::vector<SafePointer<TimestampWidget>>& timestampWidgetPtrVector);
     ~TimestampContainerWidget();
 
     void paint (Graphics&) override;
@@ -28,13 +27,14 @@ public:
 
     void addTimestampWidget (const double& timeInSeconds);
     void cleanTimestampVector();
+    void deleteChild (TimestampWidget* child);
 
 private:
-    std::vector<SafePointer<TimestampWidget>> timestampWidgetPtrVector;
+    OwnedArray<TimestampWidget> timestampWidgetArray;
     std::unique_ptr<Viewport> viewportPtr;
 
     void sortTimestampWidget();
-    void a (const TimestampWidget& a, const TimestampWidget& b);
+//    void a (const TimestampWidget& a, const TimestampWidget& b);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimestampContainerWidget)
 };

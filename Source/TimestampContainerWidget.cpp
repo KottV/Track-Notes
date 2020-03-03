@@ -19,19 +19,8 @@ TimestampContainerWidget::TimestampContainerWidget()
     addAndMakeVisible (viewportPtr.get());
 }
 
-TimestampContainerWidget::TimestampContainerWidget (
-    const std::vector<SafePointer<TimestampWidget>>& timestampWidgetPtrVector
-)
-    : timestampWidgetPtrVector (timestampWidgetPtrVector)
-{
-}
-
 TimestampContainerWidget::~TimestampContainerWidget()
 {
-    cleanTimestampVector();
-
-    for (auto& i : timestampWidgetPtrVector)
-        delete i;
 }
 
 void TimestampContainerWidget::paint (Graphics& g)
@@ -52,75 +41,36 @@ void TimestampContainerWidget::resized()
 
     const float FLEX_VALUE = 2.5;
     const unsigned int NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW = 6;
-    unsigned int numberOfActiveTimestampWidgets = 0;
 
-    for (auto it = timestampWidgetPtrVector.begin(); it != timestampWidgetPtrVector.end(); it++)
+    for (auto it = timestampWidgetArray.begin(); it != timestampWidgetArray.end(); it++)
     {
-        if (! (*it)->getShouldDeleteTimestamp())
-        {
-            numberOfActiveTimestampWidgets++;
-
-            fb.items
-                .add (FlexItem (**it)
-                .withFlex (FLEX_VALUE)
-                .withMinHeight (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW)
-                .withMaxHeight (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW)
-                .withMaxWidth (getWidth()));
-            addAndMakeVisible (**it);
-        }
-        else
-        {
-            (*it)->setVisible (false);
-            removeChildComponent (*it);
-        }
+        fb.items
+            .add (FlexItem (**it)
+            .withFlex (FLEX_VALUE)
+            .withMinHeight (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW)
+            .withMaxHeight (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW)
+            .withMaxWidth (getWidth()));
+        addAndMakeVisible (**it);
     }
 
-    Rectangle<int> rect (
+    Rectangle<int> layoutRectangle (
         0,
         0,
         getWidth(),
-        (unsigned int) (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW) * numberOfActiveTimestampWidgets
+        (unsigned int) (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW) * timestampWidgetArray.size()
     );
 
-    std::cout << timestampWidgetPtrVector.size() << std::endl;
-
-    std::cout << rect.getHeight() << std::endl;
-
-    fb.performLayout (rect);
+    fb.performLayout (layoutRectangle);
 }
 
 void TimestampContainerWidget::addTimestampWidget (const double& timeInSeconds)
 {
-    SafePointer<TimestampWidget> timestampWidgetPtr = new (std::nothrow) TimestampWidget (timeInSeconds);
-
-    std::cout << timestampWidgetPtr << std::endl;
-
-    timestampWidgetPtrVector.push_back (timestampWidgetPtr);
-    cleanTimestampVector();
-//    sortTimestampWidget();
+    timestampWidgetArray.add (new TimestampWidget (timeInSeconds));
     resized();
 }
 
-void TimestampContainerWidget::cleanTimestampVector()
+void TimestampContainerWidget::deleteChild (TimestampWidget* child)
 {
-    for (auto it = timestampWidgetPtrVector.begin(); it != timestampWidgetPtrVector.end();)
-    {
-        if ((*it)->getShouldDeleteTimestamp())
-        {
-            delete *it;
-            it = timestampWidgetPtrVector.erase (it);
-        }
-        else
-            it++;
-    }
+    timestampWidgetArray.removeObject (child);
+    resized();
 }
-
-void TimestampContainerWidget::sortTimestampWidget()
-{
-    std::sort (timestampWidgetPtrVector.begin(), timestampWidgetPtrVector.end());
-}
-
-//void TimestampContainerWidget::a (const TimestampWidget& a, const TimestampWidget& b)
-//{
-//    return a < b;
-//}

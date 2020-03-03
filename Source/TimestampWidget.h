@@ -30,7 +30,6 @@ public:
     void resized() override;
 
     void buttonClicked (Button* buttonThatWasClicked) override;
-    bool getShouldDeleteTimestamp();
 
 private:
     std::unique_ptr<Label> timestampLabelPtr;
@@ -40,7 +39,6 @@ private:
     std::unique_ptr<StaticTextSizeButton> staticTextSizeButtonPtr;
 
     Timecode timecode;
-    bool shouldDeleteTimestamp;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimestampWidget)
 };
