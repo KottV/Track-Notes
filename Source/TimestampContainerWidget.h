@@ -16,6 +16,17 @@
 //==============================================================================
 /*
 */
+
+class TimestampElementComparator
+{
+public:
+    static int compareElements (TimestampWidget* firstPtr, TimestampWidget* secondPtr)
+    {
+        return (*firstPtr < *secondPtr) ? -1 : ((*secondPtr < *firstPtr) ? 1 : 0);
+    }
+};
+
+
 class TimestampContainerWidget    : public Component
 {
 public:
@@ -31,6 +42,7 @@ public:
 
 private:
     OwnedArray<TimestampWidget> timestampWidgetOwnedArray;
+    TimestampElementComparator timestampElementComparator;
     std::unique_ptr<Viewport> viewportPtr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimestampContainerWidget)

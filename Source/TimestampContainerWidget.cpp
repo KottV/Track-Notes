@@ -65,7 +65,7 @@ void TimestampContainerWidget::resized()
 
 void TimestampContainerWidget::addTimestampWidget (const double& timeInSeconds)
 {
-    timestampWidgetOwnedArray.add (new TimestampWidget (timeInSeconds));
+    timestampWidgetOwnedArray.addSorted (timestampElementComparator, new TimestampWidget (timeInSeconds));
     resized();
 }
 
