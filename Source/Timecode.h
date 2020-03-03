@@ -18,10 +18,10 @@ public:
     Timecode (const double& timeInSeconds);
     ~Timecode();
 
-    bool operator< (const Timecode& timecodeRight);
+    bool operator< (const Timecode& timecodeRight) const;
 
     void buildTimecodeString (double timeInSeconds);
-    String getTimecodeString();
+    String getTimecodeString() const;
 private:
     String timecodeString;
 

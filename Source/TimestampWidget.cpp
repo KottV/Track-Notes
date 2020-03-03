@@ -35,7 +35,7 @@ TimestampWidget::~TimestampWidget()
     removeTimestampButtonPtr = nullptr;
 }
 
-bool TimestampWidget::operator< (const TimestampWidget& timestampWidgetRight)
+bool TimestampWidget::operator< (const TimestampWidget& timestampWidgetRight) const
 {
     return timecode < timestampWidgetRight.timecode;
 }

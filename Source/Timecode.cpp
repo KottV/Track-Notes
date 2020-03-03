@@ -19,7 +19,7 @@ Timecode::~Timecode()
 {
 }
 
-bool Timecode::operator< (const Timecode& timecodeRight)
+bool Timecode::operator< (const Timecode& timecodeRight) const
 {
     return timeInSeconds < timecodeRight.timeInSeconds;
 }
@@ -55,7 +55,7 @@ void Timecode::buildTimecodeString (double timeInSeconds)
     timecodeString += String (seconds).paddedLeft ('0', 2);
 }
 
-String Timecode::getTimecodeString()
+String Timecode::getTimecodeString() const
 {
     return timecodeString;
 }

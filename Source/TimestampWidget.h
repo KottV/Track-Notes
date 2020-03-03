@@ -24,7 +24,7 @@ public:
     TimestampWidget (const double& timeInSeconds);
     ~TimestampWidget();
 
-    bool operator< (const TimestampWidget& timestampWidgetRight);
+    bool operator< (const TimestampWidget& timestampWidgetRight) const;
 
     void paint (Graphics&) override;
     void resized() override;
