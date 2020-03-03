@@ -42,7 +42,7 @@ void TimestampContainerWidget::resized()
     const float FLEX_VALUE = 2.5;
     const unsigned int NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW = 6;
 
-    for (auto it = timestampWidgetArray.begin(); it != timestampWidgetArray.end(); it++)
+    for (auto it = timestampWidgetOwnedArray.begin(); it != timestampWidgetOwnedArray.end(); it++)
     {
         fb.items
             .add (FlexItem (**it)
@@ -57,7 +57,7 @@ void TimestampContainerWidget::resized()
         0,
         0,
         getWidth(),
-        (unsigned int) (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW) * timestampWidgetArray.size()
+        (unsigned int) (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW) * timestampWidgetOwnedArray.size()
     );
 
     fb.performLayout (layoutRectangle);
@@ -65,12 +65,12 @@ void TimestampContainerWidget::resized()
 
 void TimestampContainerWidget::addTimestampWidget (const double& timeInSeconds)
 {
-    timestampWidgetArray.add (new TimestampWidget (timeInSeconds));
+    timestampWidgetOwnedArray.add (new TimestampWidget (timeInSeconds));
     resized();
 }
 
 void TimestampContainerWidget::deleteChild (TimestampWidget* child)
 {
-    timestampWidgetArray.removeObject (child);
+    timestampWidgetOwnedArray.removeObject (child);
     resized();
 }

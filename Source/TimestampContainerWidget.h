@@ -30,7 +30,7 @@ public:
     void deleteChild (TimestampWidget* child);
 
 private:
-    OwnedArray<TimestampWidget> timestampWidgetArray;
+    OwnedArray<TimestampWidget> timestampWidgetOwnedArray;
     std::unique_ptr<Viewport> viewportPtr;
 
     void sortTimestampWidget();
