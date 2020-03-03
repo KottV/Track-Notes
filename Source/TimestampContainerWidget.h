@@ -33,7 +33,5 @@ private:
     OwnedArray<TimestampWidget> timestampWidgetOwnedArray;
     std::unique_ptr<Viewport> viewportPtr;
 
-    void sortTimestampWidget();
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimestampContainerWidget)
 };
