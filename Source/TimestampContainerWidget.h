@@ -28,7 +28,6 @@ public:
 
     void addTimestampWidget (const double& timeInSeconds);
     void cleanTimestampVector();
-    void flexBoxRelayout();
 
 private:
     std::vector<SafePointer<TimestampWidget>> timestampWidgetPtrVector;

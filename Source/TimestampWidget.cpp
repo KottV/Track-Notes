@@ -81,7 +81,7 @@ void TimestampWidget::buttonClicked (Button* buttonThatWasClicked)
     if (buttonThatWasClicked == removeTimestampButtonPtr.get())
     {
         shouldDeleteTimestamp = true;
-        findParentComponentOfClass<TimestampContainerWidget>()->flexBoxRelayout();
+        findParentComponentOfClass<TimestampContainerWidget>()->resized();
 //        delete this;
     }
 }

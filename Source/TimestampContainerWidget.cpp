@@ -47,37 +47,6 @@ void TimestampContainerWidget::paint (Graphics& g)
 
 void TimestampContainerWidget::resized()
 {
-    
-}
-
-void TimestampContainerWidget::addTimestampWidget (const double& timeInSeconds)
-{
-    SafePointer<TimestampWidget> timestampWidgetPtr = new (std::nothrow) TimestampWidget (timeInSeconds);
-
-    std::cout << timestampWidgetPtr << std::endl;
-
-    timestampWidgetPtrVector.push_back (timestampWidgetPtr);
-    cleanTimestampVector();
-//    sortTimestampWidget();
-    flexBoxRelayout();
-}
-
-void TimestampContainerWidget::cleanTimestampVector()
-{
-    for (auto it = timestampWidgetPtrVector.begin(); it != timestampWidgetPtrVector.end();)
-    {
-        if ((*it)->getShouldDeleteTimestamp())
-        {
-            delete *it;
-            it = timestampWidgetPtrVector.erase (it);
-        }
-        else
-            it++;
-    }
-}
-
-void TimestampContainerWidget::flexBoxRelayout()
-{
     FlexBox fb;
     fb.flexDirection = FlexBox::Direction::column;
 
@@ -118,6 +87,32 @@ void TimestampContainerWidget::flexBoxRelayout()
     std::cout << rect.getHeight() << std::endl;
 
     fb.performLayout (rect);
+}
+
+void TimestampContainerWidget::addTimestampWidget (const double& timeInSeconds)
+{
+    SafePointer<TimestampWidget> timestampWidgetPtr = new (std::nothrow) TimestampWidget (timeInSeconds);
+
+    std::cout << timestampWidgetPtr << std::endl;
+
+    timestampWidgetPtrVector.push_back (timestampWidgetPtr);
+    cleanTimestampVector();
+//    sortTimestampWidget();
+    resized();
+}
+
+void TimestampContainerWidget::cleanTimestampVector()
+{
+    for (auto it = timestampWidgetPtrVector.begin(); it != timestampWidgetPtrVector.end();)
+    {
+        if ((*it)->getShouldDeleteTimestamp())
+        {
+            delete *it;
+            it = timestampWidgetPtrVector.erase (it);
+        }
+        else
+            it++;
+    }
 }
 
 void TimestampContainerWidget::sortTimestampWidget()
