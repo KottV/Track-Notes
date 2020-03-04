@@ -14,8 +14,8 @@
 //==============================================================================
 TimestampContainerWidget::TimestampContainerWidget()
 {
-    viewportPtr.reset (new Viewport);
     viewportPtr->setBounds (0, 0, getWidth(), getHeight());
+    viewportPtr.reset (new Viewport());
     addAndMakeVisible (viewportPtr.get());
 }
 
