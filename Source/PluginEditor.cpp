@@ -341,10 +341,10 @@ TrackNotesAudioProcessorEditor::TrackNotesAudioProcessorEditor (TrackNotesAudioP
     displayImageTwoButton->setLookAndFeel (staticTextSizeButtonPtr.get());
     removeImageTwoButton->setLookAndFeel (staticTextSizeButtonPtr.get());
 
-    timestampContainerWidgetPtr.reset (new TimestampContainerWidget);
-    addAndMakeVisible (timestampContainerWidgetPtr.get());
+    timestampManagerPtr.reset (new TimestampManager);
+    addAndMakeVisible (timestampManagerPtr.get());
     
-    timestampContainerWidgetPtr->setBounds (0, 200, 500, 175);
+    timestampManagerPtr->setBounds (0, 200, 500, 175);
 
     // Set up stealth mode
     // Turn button into a toggle button
@@ -401,7 +401,7 @@ TrackNotesAudioProcessorEditor::~TrackNotesAudioProcessorEditor()
     //[Destructor]. You can add your own custom destruction code here..
 
     staticTextSizeButtonPtr = nullptr;
-    timestampContainerWidgetPtr = nullptr;
+    timestampManagerPtr = nullptr;
 
     //[/Destructor]
 }
@@ -460,7 +460,7 @@ void TrackNotesAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked
     {
         //[UserButtonCode_insertTimeStampButton] -- add your button handler code here..
 
-        timestampContainerWidgetPtr->addTimestamp (processor.positionInformation.timeInSeconds);
+        timestampManagerPtr->addTimestamp (processor.positionInformation.timeInSeconds);
 
         //[/UserButtonCode_insertTimeStampButton]
     }
