@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    TimestampWidget.cpp
+    Timestamp.cpp
     Created: 1 Mar 2020 12:03:54am
     Author:  Joseph Lyons
 
@@ -9,11 +9,11 @@
 */
 
 #include <JuceHeader.h>
-#include "TimestampWidget.h"
-#include "TimestampContainerWidget.h"
+#include "Timestamp.h"
+#include "TimestampManager.h"
 
 //==============================================================================
-TimestampWidget::TimestampWidget (const double& timeInSeconds)
+Timestamp::Timestamp (const double& timeInSeconds)
     : timecode (timeInSeconds)
 {
     timestampLabelPtr.reset (new Label ("timestampLabel", timecode.getTimecodeString()));
@@ -28,19 +28,19 @@ TimestampWidget::TimestampWidget (const double& timeInSeconds)
     addAndMakeVisible (removeTimestampButtonPtr.get());
 }
 
-TimestampWidget::~TimestampWidget()
+Timestamp::~Timestamp()
 {
     timestampLabelPtr = nullptr;
     timestampNotesPtr = nullptr;
     removeTimestampButtonPtr = nullptr;
 }
 
-bool TimestampWidget::operator< (const TimestampWidget& timestampWidgetRight) const
+bool Timestamp::operator< (const Timestamp& TimestampRight) const
 {
-    return timecode < timestampWidgetRight.timecode;
+    return timecode < TimestampRight.timecode;
 }
 
-void TimestampWidget::paint (Graphics& g)
+void Timestamp::paint (Graphics& g)
 {
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 
@@ -50,7 +50,7 @@ void TimestampWidget::paint (Graphics& g)
     g.setColour (Colours::grey);
 }
 
-void TimestampWidget::resized()
+void Timestamp::resized()
 {
     FlexBox fb;
     fb.flexDirection = FlexBox::Direction::row;
@@ -76,13 +76,13 @@ void TimestampWidget::resized()
     fb.performLayout (getLocalBounds().toFloat());
 }
 
-void TimestampWidget::buttonClicked (Button* buttonThatWasClicked)
+void Timestamp::buttonClicked (Button* buttonThatWasClicked)
 {
     if (buttonThatWasClicked == removeTimestampButtonPtr.get())
     {
         MessageManager::callAsync ([this]
         {
-            findParentComponentOfClass<TimestampContainerWidget>()->deleteChild (this);
+            findParentComponentOfClass<TimestampManager>()->deleteChild (this);
         });
     }
 }

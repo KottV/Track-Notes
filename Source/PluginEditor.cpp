@@ -460,7 +460,7 @@ void TrackNotesAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked
     {
         //[UserButtonCode_insertTimeStampButton] -- add your button handler code here..
 
-        timestampContainerWidgetPtr->addTimestampWidget (processor.positionInformation.timeInSeconds);
+        timestampContainerWidgetPtr->addTimestamp (processor.positionInformation.timeInSeconds);
 
         //[/UserButtonCode_insertTimeStampButton]
     }

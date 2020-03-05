@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    TimestampContainerWidget.h
+    TimestampManager.h
     Created: 1 Mar 2020 4:42:09pm
     Author:  Joseph Lyons
 
@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "TimestampWidget.h"
+#include "Timestamp.h"
 
 //==============================================================================
 /*
@@ -20,30 +20,29 @@
 class TimestampElementComparator
 {
 public:
-    static int compareElements (TimestampWidget* firstPtr, TimestampWidget* secondPtr)
+    static int compareElements (Timestamp* firstPtr, Timestamp* secondPtr)
     {
         return (*firstPtr < *secondPtr) ? -1 : ((*secondPtr < *firstPtr) ? 1 : 0);
     }
 };
 
 
-class TimestampContainerWidget    : public Component
+class TimestampManager    : public Component
 {
 public:
-    TimestampContainerWidget();
-    ~TimestampContainerWidget();
+    TimestampManager();
+    ~TimestampManager();
 
     void paint (Graphics&) override;
     void resized() override;
 
-    void addTimestampWidget (const double& timeInSeconds);
+    void addTimestamp (const double& timeInSeconds);
     void cleanTimestampVector();
-    void deleteChild (TimestampWidget* child);
+    void deleteChild (Timestamp* child);
 
 private:
-    OwnedArray<TimestampWidget> timestampWidgetOwnedArray;
+    OwnedArray<Timestamp> TimestampOwnedArray;
     TimestampElementComparator timestampElementComparator;
-    std::unique_ptr<Viewport> viewportPtr;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimestampContainerWidget)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimestampManager)
 };

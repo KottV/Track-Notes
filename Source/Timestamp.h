@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    TimestampWidget.h
+    Timestamp.h
     Created: 1 Mar 2020 12:03:54am
     Author:  Joseph Lyons
 
@@ -17,14 +17,14 @@
 //==============================================================================
 /*
 */
-class TimestampWidget    : public Component,
+class Timestamp    : public Component,
                            public Button::Listener
 {
 public:
-    TimestampWidget (const double& timeInSeconds);
-    ~TimestampWidget();
+    Timestamp (const double& timeInSeconds);
+    ~Timestamp();
 
-    bool operator< (const TimestampWidget& timestampWidgetRight) const;
+    bool operator< (const Timestamp& TimestampRight) const;
 
     void paint (Graphics&) override;
     void resized() override;
@@ -40,5 +40,5 @@ private:
 
     Timecode timecode;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimestampWidget)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Timestamp)
 };

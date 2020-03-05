@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    TimestampContainerWidget.cpp
+    TimestampManager.cpp
     Created: 1 Mar 2020 4:42:09pm
     Author:  Joseph Lyons
 
@@ -9,23 +9,20 @@
 */
 
 #include <JuceHeader.h>
-#include "TimestampContainerWidget.h"
+#include "TimestampManager.h"
 
 //==============================================================================
-TimestampContainerWidget::TimestampContainerWidget()
-{
-    viewportPtr->setBounds (0, 0, getWidth(), getHeight());
-    viewportPtr.reset (new Viewport());
-    addAndMakeVisible (viewportPtr.get());
-}
-
-TimestampContainerWidget::~TimestampContainerWidget()
+TimestampManager::TimestampManager()
 {
 }
 
-void TimestampContainerWidget::paint (Graphics& g)
+TimestampManager::~TimestampManager()
 {
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+}
+
+void TimestampManager::paint (Graphics& g)
+{
+//    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 
     g.setColour (Colours::grey);
     g.drawRect (getLocalBounds(), 1);
@@ -34,7 +31,7 @@ void TimestampContainerWidget::paint (Graphics& g)
     g.setFont (14.0f);
 }
 
-void TimestampContainerWidget::resized()
+void TimestampManager::resized()
 {
     FlexBox fb;
     fb.flexDirection = FlexBox::Direction::column;
@@ -42,7 +39,7 @@ void TimestampContainerWidget::resized()
     const float FLEX_VALUE = 2.5;
     const unsigned int NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW = 6;
 
-    for (auto it = timestampWidgetOwnedArray.begin(); it != timestampWidgetOwnedArray.end(); it++)
+    for (auto it = TimestampOwnedArray.begin(); it != TimestampOwnedArray.end(); it++)
     {
         fb.items
             .add (FlexItem (**it)
@@ -57,20 +54,20 @@ void TimestampContainerWidget::resized()
         0,
         0,
         getWidth(),
-        (unsigned int) (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW) * timestampWidgetOwnedArray.size()
+        (unsigned int) (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW) * TimestampOwnedArray.size()
     );
 
     fb.performLayout (layoutRectangle);
 }
 
-void TimestampContainerWidget::addTimestampWidget (const double& timeInSeconds)
+void TimestampManager::addTimestamp (const double& timeInSeconds)
 {
-    timestampWidgetOwnedArray.addSorted (timestampElementComparator, new TimestampWidget (timeInSeconds));
+    TimestampOwnedArray.addSorted (timestampElementComparator, new Timestamp (timeInSeconds));
     resized();
 }
 
-void TimestampContainerWidget::deleteChild (TimestampWidget* child)
+void TimestampManager::deleteChild (Timestamp* child)
 {
-    timestampWidgetOwnedArray.removeObject (child);
+    TimestampOwnedArray.removeObject (child);
     resized();
 }

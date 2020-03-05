@@ -24,7 +24,7 @@
 #include "StaticTextSizeButton.hpp"
 #include "PluginProcessor.h"
 #include "BasicWindow.cpp"
-#include "TimestampContainerWidget.h"
+#include "TimestampManager.h"
 //[/Headers]
 
 
@@ -73,7 +73,7 @@ private:
     SafePointer<BasicWindow> basicWindowImageTwoPtr;
 
     std::unique_ptr<StaticTextSizeButton> staticTextSizeButtonPtr;
-    std::unique_ptr<TimestampContainerWidget> timestampContainerWidgetPtr;
+    std::unique_ptr<TimestampManager> TimestampManagerPtr;
 
     TooltipWindow toolTipWindow;
 
