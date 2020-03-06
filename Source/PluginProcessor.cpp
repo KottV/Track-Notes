@@ -162,7 +162,6 @@ void TrackNotesAudioProcessor::getStateInformation (MemoryBlock& destData)
     xml.setAttribute (XMLKeyNames::performersName, performersNameString);
     xml.setAttribute (XMLKeyNames::instrumentPlayed, instrumentPlayedString);
     xml.setAttribute (XMLKeyNames::microphonesUsed, microphonesUsedString);
-    xml.setAttribute (XMLKeyNames::timestampedNotes, timestampedNotesString.trim());
     xml.setAttribute (XMLKeyNames::generalNotes, generalNotesString.trim());
 
     xml.setAttribute (XMLKeyNames::imageOnePath, imageOnePath.getFullPathName());
@@ -173,6 +172,15 @@ void TrackNotesAudioProcessor::getStateInformation (MemoryBlock& destData)
     xml.setAttribute (XMLKeyNames::microphonesUsedLabel, microphonesUsedLabelString);
 
     xml.setAttribute (XMLKeyNames::stealthIsActivated, stealthIsActivated);
+
+    // Save Timestamp widget data
+    xml.setAttribute (XMLKeyNames::numberOfTimestamps, timestampDataArray.size());
+
+    for (int i = 0; i < timestampDataArray.size(); i++)
+    {
+        xml.setAttribute (XMLKeyNames::timestampsTimeInSecondsBaseName + String(i), timestampDataArray[i].timeInSeconds);
+        xml.setAttribute (XMLKeyNames::timestampsNotesBaseName + String(i), timestampDataArray[i].notes);
+    }
 
     // Use this helper function to stuff it into the binary blob and return it..
     copyXmlToBinary (xml, destData);
@@ -192,7 +200,6 @@ void TrackNotesAudioProcessor::setStateInformation (const void* data, int sizeIn
             performersNameString = xml->getStringAttribute (XMLKeyNames::performersName);
             instrumentPlayedString = xml->getStringAttribute (XMLKeyNames::instrumentPlayed);
             microphonesUsedString = xml->getStringAttribute (XMLKeyNames::microphonesUsed);
-            timestampedNotesString = xml->getStringAttribute (XMLKeyNames::timestampedNotes);
             generalNotesString = xml->getStringAttribute (XMLKeyNames::generalNotes);
 
             imageOnePath = xml->getStringAttribute (XMLKeyNames::imageOnePath);
@@ -210,6 +217,17 @@ void TrackNotesAudioProcessor::setStateInformation (const void* data, int sizeIn
 
             if (imageTwoPath.exists())
                 imageTwo = ImageCache::getFromFile (imageTwoPath);
+
+            // Load Timestamp widget data
+            int numberOfTimestamps = xml->getIntAttribute (XMLKeyNames::numberOfTimestamps);
+
+            for (int i = 0; i < numberOfTimestamps; i++)
+            {
+                TimestampData timestampData;
+                timestampData.timeInSeconds = xml->getDoubleAttribute (XMLKeyNames::timestampsTimeInSecondsBaseName + String(i));
+                timestampData.notes = xml->getStringAttribute (XMLKeyNames::timestampsNotesBaseName + String(i));
+                timestampDataArray.add (timestampData);
+            }
         }
     }
 }

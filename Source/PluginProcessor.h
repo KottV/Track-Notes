@@ -23,6 +23,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "TimestampData.h"
 
 
 //==============================================================================
@@ -83,6 +84,8 @@ public:
     String microphonesUsedLabelString;
 
     bool stealthIsActivated;
+
+    Array<TimestampData> timestampDataArray;
     
 private:
     

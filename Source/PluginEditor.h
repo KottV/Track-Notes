@@ -24,6 +24,7 @@
 #include "StaticTextSizeButton.hpp"
 #include "PluginProcessor.h"
 #include "BasicWindow.cpp"
+#include "TimestampManager.h"
 //[/Headers]
 
 
@@ -72,6 +73,8 @@ private:
     SafePointer<BasicWindow> basicWindowImageTwoPtr;
 
     std::unique_ptr<StaticTextSizeButton> staticTextSizeButtonPtr;
+    std::unique_ptr<TimestampManager> timestampManagerPtr;
+    std::unique_ptr<Viewport> viewportPtr;
 
     TooltipWindow toolTipWindow;
 
@@ -83,13 +86,9 @@ private:
     void loadImage (Image &image, File &imagePath, const bool &isImageOne);
     void createImageWindow (SafePointer<BasicWindow> &basicWindowPtr, Image &image, File &imagePath);
     void showErrorLoadingImageWindow (const String &path);
-    void fillTimeIntervalValues (int &hours, int &minutes, int &seconds);
-    String formatAndBuildTimecode (const int &hours, const int &minutes, const int &seconds);
     void createImagePreviews();
     void scaleImageDimensionsIfTooLarge (int &imageWidtht, int &imageHeight);
     void setStealthModeState (const bool& isActivated);
-    void hideTextAndDisableEditor (TextEditor &textEditor);
-    void showTextAndEnableEditor (TextEditor &textEditor);
     void setFocusTabOrder();
     void startDemoTimer();
     void timerCallback() override;
@@ -122,7 +121,6 @@ private:
     std::unique_ptr<TextEditor> performersNameEditor;
     std::unique_ptr<TextEditor> instrumentPlayedEditor;
     std::unique_ptr<TextEditor> microphonesUsedEditor;
-    std::unique_ptr<TextEditor> timestampedNotesEditor;
     std::unique_ptr<TextEditor> generalNotesEditor;
 
 

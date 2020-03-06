@@ -27,6 +27,17 @@
       <FILE id="FtXYsH" name="BasicWindow.cpp" compile="1" resource="0" file="Source/BasicWindow.cpp"/>
       <FILE id="IT3yPP" name="ImageWindow.h" compile="0" resource="0" file="Source/ImageWindow.h"/>
       <FILE id="Z2U2YR" name="ImageWindow.cpp" compile="1" resource="0" file="Source/ImageWindow.cpp"/>
+      <GROUP id="{9B3CC7CA-D7AB-A1C1-2D35-F2D10821D473}" name="Timestamp">
+        <FILE id="kScbSk" name="TimestampManager.h" compile="0" resource="0"
+              file="Source/TimestampManager.h"/>
+        <FILE id="fxcDzo" name="TimestampManager.cpp" compile="1" resource="0"
+              file="Source/TimestampManager.cpp"/>
+        <FILE id="Y77tfN" name="Timestamp.h" compile="0" resource="0" file="Source/Timestamp.h"/>
+        <FILE id="CE9cBO" name="Timestamp.cpp" compile="1" resource="0" file="Source/Timestamp.cpp"/>
+        <FILE id="VOT9YG" name="Timecode.h" compile="0" resource="0" file="Source/Timecode.h"/>
+        <FILE id="SnHqOe" name="Timecode.cpp" compile="1" resource="0" file="Source/Timecode.cpp"/>
+        <FILE id="iHatt6" name="TimestampData.h" compile="0" resource="0" file="Source/TimestampData.h"/>
+      </GROUP>
       <FILE id="aI7fmO" name="StaticTextSizeButton.hpp" compile="0" resource="0"
             file="Source/StaticTextSizeButton.hpp"/>
       <FILE id="EM5t7O" name="XMLKeyNames.hpp" compile="0" resource="0" file="Source/XMLKeyNames.hpp"/>

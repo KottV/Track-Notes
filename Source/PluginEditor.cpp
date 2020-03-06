@@ -36,7 +36,7 @@ TrackNotesAudioProcessorEditor::TrackNotesAudioProcessorEditor (TrackNotesAudioP
 
     createImagePreviews();
 
-    isRunningInDemoMode = true;
+    isRunningInDemoMode = false;
 
     if (isRunningInDemoMode)
     {
@@ -256,21 +256,6 @@ TrackNotesAudioProcessorEditor::TrackNotesAudioProcessorEditor (TrackNotesAudioP
 
     microphonesUsedEditor->setBounds (218, 130, 282, 30);
 
-    timestampedNotesEditor.reset (new TextEditor ("timestampedNotesEditor"));
-    addAndMakeVisible (timestampedNotesEditor.get());
-    timestampedNotesEditor->setMultiLine (true);
-    timestampedNotesEditor->setReturnKeyStartsNewLine (true);
-    timestampedNotesEditor->setReadOnly (false);
-    timestampedNotesEditor->setScrollbarsShown (true);
-    timestampedNotesEditor->setCaretVisible (true);
-    timestampedNotesEditor->setPopupMenuEnabled (true);
-    timestampedNotesEditor->setColour (TextEditor::backgroundColourId, Colour (0xff565454));
-    timestampedNotesEditor->setColour (TextEditor::highlightColourId, Colours::black);
-    timestampedNotesEditor->setColour (TextEditor::outlineColourId, Colour (0xff565454));
-    timestampedNotesEditor->setText (String());
-
-    timestampedNotesEditor->setBounds (0, 200, 500, 175);
-
     generalNotesEditor.reset (new TextEditor ("generalNotesEditor"));
     addAndMakeVisible (generalNotesEditor.get());
     generalNotesEditor->setMultiLine (true);
@@ -301,8 +286,21 @@ TrackNotesAudioProcessorEditor::TrackNotesAudioProcessorEditor (TrackNotesAudioP
     performersNameEditor->setFont (fontSize);
     instrumentPlayedEditor->setFont (fontSize);
     microphonesUsedEditor->setFont (fontSize);
-    timestampedNotesEditor->setFont (fontSize);
+    // TODO: Set timestamp font
     generalNotesEditor->setFont (fontSize);
+
+    viewportPtr.reset (new Viewport);
+    addAndMakeVisible (viewportPtr.get());
+    viewportPtr->setBounds (0, 200, 500, 175);
+
+    timestampManagerPtr.reset (new TimestampManager (
+        viewportPtr->getWidth(),
+        viewportPtr->getHeight())
+    );
+    addAndMakeVisible (timestampManagerPtr.get());
+
+    viewportPtr->setViewedComponent (timestampManagerPtr.get(), false);
+    viewportPtr->setScrollBarsShown (true, false);
 
     getDataFromProcessor();
 
@@ -389,13 +387,14 @@ TrackNotesAudioProcessorEditor::~TrackNotesAudioProcessorEditor()
     performersNameEditor = nullptr;
     instrumentPlayedEditor = nullptr;
     microphonesUsedEditor = nullptr;
-    timestampedNotesEditor = nullptr;
     generalNotesEditor = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
 
     staticTextSizeButtonPtr = nullptr;
+    timestampManagerPtr = nullptr;
+    viewportPtr = nullptr;
 
     //[/Destructor]
 }
@@ -419,6 +418,24 @@ void TrackNotesAudioProcessorEditor::paint (Graphics& g)
 
     {
         int x = 760, y = 130, width = 245, height = 245;
+        Colour fillColour = Colour (0xff565454);
+        //[UserPaintCustomArguments] Customize the painting arguments here..
+        //[/UserPaintCustomArguments]
+        g.setColour (fillColour);
+        g.fillRect (x, y, width, height);
+    }
+
+    {
+        int x = 0, y = 200, width = 500, height = 175;
+        Colour fillColour = Colour (0xff565454);
+        //[UserPaintCustomArguments] Customize the painting arguments here..
+        //[/UserPaintCustomArguments]
+        g.setColour (fillColour);
+        g.fillRect (x, y, width, height);
+    }
+
+    {
+        int x = 0, y = 415, width = 1010, height = 175;
         Colour fillColour = Colour (0xff565454);
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
@@ -454,21 +471,7 @@ void TrackNotesAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked
     {
         //[UserButtonCode_insertTimeStampButton] -- add your button handler code here..
 
-        int hours, minutes, seconds;
-
-        fillTimeIntervalValues (hours, minutes, seconds);
-
-        // Copy current text from the timestamped notes editor
-        String tempTextEditorString = timestampedNotesEditor->getText();
-
-        tempTextEditorString += formatAndBuildTimecode (hours, minutes, seconds);
-
-        timestampedNotesEditor->setText (tempTextEditorString);
-
-        // Put editor into focus and then move caret to end,
-        // Which is where new timestamp has been inserted
-        timestampedNotesEditor->grabKeyboardFocus();
-        timestampedNotesEditor->moveCaretToEnd();
+        timestampManagerPtr->addTimestamp (processor.positionInformation.timeInSeconds);
 
         //[/UserButtonCode_insertTimeStampButton]
     }
@@ -680,51 +683,6 @@ void TrackNotesAudioProcessorEditor::showErrorLoadingImageWindow (const String &
                                  path + "\n\nPlease load image again.");
 }
 
-void TrackNotesAudioProcessorEditor::fillTimeIntervalValues (int &hours, int &minutes, int &seconds)
-{
-    // Convert time into hours, minutes, and seconds
-    int totalSeconds = processor.positionInformation.timeInSeconds;
-
-    const int secondsPerHour   = 3600;
-    const int secondsPerMinute = 60;
-
-    // Calculate hours
-    hours = totalSeconds / secondsPerHour;
-
-    // Deduct hours (in seconds) from total
-    totalSeconds -= (hours * secondsPerHour);
-
-    // Calculate minutes
-    minutes = totalSeconds / secondsPerMinute;
-
-    // Deduct minutes (in seconds) from total
-    totalSeconds -= (minutes * secondsPerMinute);
-
-    // Leftover is seconds
-    seconds = totalSeconds;
-}
-
-String TrackNotesAudioProcessorEditor::formatAndBuildTimecode (const int &hours,
-                                                               const int &minutes,
-                                                               const int &seconds)
-{
-    String tempString;
-
-    // Don't insert newline on first timestamp
-    if (! timestampedNotesEditor->isEmpty())
-        tempString += "\n";
-
-    tempString += "@ ";
-    tempString += String (hours).paddedLeft ('0', 2);
-    tempString += ":";
-    tempString += String (minutes).paddedLeft ('0', 2);
-    tempString += ":";
-    tempString += String (seconds).paddedLeft ('0', 2);
-    tempString += " - ";
-
-    return tempString;
-}
-
 void TrackNotesAudioProcessorEditor::scaleImageDimensionsIfTooLarge (int &imageWidth,
                                                                      int &imageHeight)
 {
@@ -767,50 +725,19 @@ void TrackNotesAudioProcessorEditor::scaleImageDimensionsIfTooLarge (int &imageW
 
 void TrackNotesAudioProcessorEditor::setStealthModeState (const bool& isActivated)
 {
-    if (isActivated)
-    {
-        hideTextAndDisableEditor (*timestampedNotesEditor);
-        hideTextAndDisableEditor (*generalNotesEditor);
-    }
-    else
-    {
-        showTextAndEnableEditor (*timestampedNotesEditor);
-        showTextAndEnableEditor (*generalNotesEditor);
-    }
-
     insertTimeStampButton->setInterceptsMouseClicks (! isActivated, ! isActivated);
-}
 
-void TrackNotesAudioProcessorEditor::hideTextAndDisableEditor (TextEditor &textEditor)
-{
-    unsigned int numberOfLinesVisibleInEditor = (textEditor.getHeight() / textEditor.getFont().getHeight());
-    String tempTextHolder = String::repeatedString ("\n", numberOfLinesVisibleInEditor + 1) + textEditor.getText();
-
-    textEditor.setText (tempTextHolder, dontSendNotification);
-    textEditor.moveCaretToTop (false);
-    textEditor.setScrollbarsShown (false);
-    textEditor.setReadOnly (true);
-    textEditor.setInterceptsMouseClicks (false, false);
-}
-
-void TrackNotesAudioProcessorEditor::showTextAndEnableEditor (TextEditor &textEditor)
-{
-    String tempTextHolder = textEditor.getText().trimStart();
-
-    textEditor.setText (tempTextHolder);
-    textEditor.moveCaretToTop (false);
-    textEditor.setScrollbarsShown (true);
-    textEditor.setReadOnly (false);
-    textEditor.setInterceptsMouseClicks (true, true);
+    viewportPtr->setVisible (! isActivated);
+    generalNotesEditor->setVisible (! isActivated);
 }
 
 void TrackNotesAudioProcessorEditor::setFocusTabOrder()
 {
-    // Set up tap order
+    // Set up tab order
     performersNameEditor->setExplicitFocusOrder (1);
     instrumentPlayedEditor->setExplicitFocusOrder (2);
     microphonesUsedEditor->setExplicitFocusOrder (3);
-    timestampedNotesEditor->setExplicitFocusOrder (4);
+    viewportPtr->setExplicitFocusOrder (4); // TODO: FIX TAB MECHANICS
     generalNotesEditor->setExplicitFocusOrder (5);
     performersNameLabel->setExplicitFocusOrder (6);
     instrumentPlayedLabel->setExplicitFocusOrder (7);
@@ -849,7 +776,15 @@ void TrackNotesAudioProcessorEditor::timerCallback()
     else if (randomNumber == 2)
         microphonesUsedEditor->setText (demoText);
     else if (randomNumber == 3)
-        timestampedNotesEditor->setText (demoText);
+    {
+        int numberOfTimestamps = timestampManagerPtr->getNumberOfTimestamps();
+
+        if (numberOfTimestamps > 0)
+        {
+            int randomTimestamp = randomNumberGenerator.nextInt (numberOfTimestamps);
+            timestampManagerPtr->setNotes (randomTimestamp, demoText);
+        }
+    }
     else
         generalNotesEditor->setText (demoText);
 }
@@ -861,7 +796,6 @@ void TrackNotesAudioProcessorEditor::getDataFromProcessor()
     instrumentPlayedEditor->setText (processor.instrumentPlayedString);
     microphonesUsedEditor->setText (processor.microphonesUsedString);
 
-    timestampedNotesEditor->setText (processor.timestampedNotesString);
     generalNotesEditor->setText (processor.generalNotesString);
 
     // Label
@@ -870,7 +804,13 @@ void TrackNotesAudioProcessorEditor::getDataFromProcessor()
     microphonesUsedLabel->setText (processor.microphonesUsedLabelString, dontSendNotification);
 
     // Buttons
-    stealthModeToggle->setToggleState(processor.stealthIsActivated, dontSendNotification);
+    stealthModeToggle->setToggleState (processor.stealthIsActivated, dontSendNotification);
+
+    // Timestamp Widget
+    Array<TimestampData> timestampData = processor.timestampDataArray;
+
+    for (auto& i : timestampData)
+        timestampManagerPtr->addTimestamp (i.timeInSeconds, i.notes);
 }
 
 void TrackNotesAudioProcessorEditor::saveDataToProcessor()
@@ -880,7 +820,6 @@ void TrackNotesAudioProcessorEditor::saveDataToProcessor()
     processor.instrumentPlayedString = instrumentPlayedEditor->getText();
     processor.microphonesUsedString = microphonesUsedEditor->getText();
 
-    processor.timestampedNotesString = timestampedNotesEditor->getText();
     processor.generalNotesString = generalNotesEditor->getText();
 
     // Labels
@@ -894,6 +833,9 @@ void TrackNotesAudioProcessorEditor::saveDataToProcessor()
 
     // Buttons
     processor.stealthIsActivated = stealthModeToggle->getToggleState();
+
+    // Timestamp Widget
+    processor.timestampDataArray = timestampManagerPtr->getTimestampDataArray();
 }
 
 void TrackNotesAudioProcessorEditor::labelTextChanged (Label* labelThatHasChanged)
@@ -945,7 +887,14 @@ void TrackNotesAudioProcessorEditor::exportMedia()
         pathToSaveTextFileTo.appendText (" " + microphonesUsedEditor->getText() + "\n\n");
 
         pathToSaveTextFileTo.appendText ("Timestamped Notes:\n");
-        pathToSaveTextFileTo.appendText (timestampedNotesEditor->getText().trim() + "\n\n");
+
+        for (auto& i: timestampManagerPtr->getTimestampDataArray())
+        {
+            pathToSaveTextFileTo.appendText (((String) i.timecodeString) + ": ");
+            pathToSaveTextFileTo.appendText (((String) i.notes) + "\n");
+        }
+
+        pathToSaveTextFileTo.appendText ("\n");
 
         pathToSaveTextFileTo.appendText ("General Notes:\n");
         pathToSaveTextFileTo.appendText (generalNotesEditor->getText().trim() + "\n\n");
@@ -987,6 +936,8 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="ff373737">
     <RECT pos="510 130 245 245" fill="solid: ff565454" hasStroke="0"/>
     <RECT pos="760 130 245 245" fill="solid: ff565454" hasStroke="0"/>
+    <RECT pos="0 200 500 175" fill="solid: ff565454" hasStroke="0"/>
+    <RECT pos="0 415 1010 175" fill="solid: ff565454" hasStroke="0"/>
   </BACKGROUND>
   <LABEL name="trackNotesLabel" id="92aa8337c9826f3e" memberName="trackNotesLabel"
          virtualName="" explicitFocusOrder="0" pos="0 0 1005 50" textCol="ffffffff"
@@ -1070,10 +1021,6 @@ BEGIN_JUCER_METADATA
               virtualName="" explicitFocusOrder="0" pos="218 130 282 30" bkgcol="ff565454"
               hilitecol="ff000000" outlinecol="ff565454" initialText="" multiline="0"
               retKeyStartsLine="0" readonly="0" scrollbars="0" caret="1" popupmenu="1"/>
-  <TEXTEDITOR name="timestampedNotesEditor" id="6efb7ce94469d9b7" memberName="timestampedNotesEditor"
-              virtualName="" explicitFocusOrder="0" pos="0 200 500 175" bkgcol="ff565454"
-              hilitecol="ff000000" outlinecol="ff565454" initialText="" multiline="1"
-              retKeyStartsLine="1" readonly="0" scrollbars="1" caret="1" popupmenu="1"/>
   <TEXTEDITOR name="generalNotesEditor" id="fa606d1bbdb35fb6" memberName="generalNotesEditor"
               virtualName="" explicitFocusOrder="0" pos="0 415 1010 175" bkgcol="ff565454"
               hilitecol="ff000000" outlinecol="ff565454" initialText="" multiline="1"
