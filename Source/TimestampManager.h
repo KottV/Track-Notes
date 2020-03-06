@@ -37,7 +37,6 @@ public:
     void resized() override;
 
     void addTimestamp (const double& timeInSeconds);
-    void cleanTimestampVector();
     void deleteChild (Timestamp* child);
 
 private:
