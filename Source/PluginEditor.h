@@ -23,7 +23,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "StaticTextSizeButton.hpp"
 #include "PluginProcessor.h"
-#include "BasicWindow.cpp"
+#include "BasicWindow.h"
 #include "TimestampManager.h"
 //[/Headers]
 
