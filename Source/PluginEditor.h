@@ -73,7 +73,8 @@ private:
     SafePointer<BasicWindow> basicWindowImageTwoPtr;
 
     std::unique_ptr<StaticTextSizeButton> staticTextSizeButtonPtr;
-    std::unique_ptr<TimestampManager> TimestampManagerPtr;
+    std::unique_ptr<TimestampManager> timestampManagerPtr;
+    std::unique_ptr<Viewport> viewportPtr;
 
     TooltipWindow toolTipWindow;
 
