@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 #include "StaticTextSizeButton.hpp"
 #include "Timecode.h"
+#include "TimestampData.h"
 
 //==============================================================================
 /*
@@ -31,15 +32,16 @@ public:
 
     void buttonClicked (Button* buttonThatWasClicked) override;
 
-    double getTimecodeInSeconds() const;
-    String getNotes() const;
+    TimestampData getTimestampData() const;
+
+    void setNotes (const String& notesString);
 
 private:
     std::unique_ptr<Label> timecodeLabelPtr;
     std::unique_ptr<TextEditor> notesPtr;
     std::unique_ptr<TextButton> removeTimestampButtonPtr;
 
-    std::unique_ptr<StaticTextSizeButton> staticTextSizeButtonPtr;
+//    std::unique_ptr<StaticTextSizeButton> staticTextSizeButtonPtr;
 
     Timecode timecode;
 

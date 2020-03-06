@@ -36,6 +36,7 @@
         <FILE id="CE9cBO" name="Timestamp.cpp" compile="1" resource="0" file="Source/Timestamp.cpp"/>
         <FILE id="VOT9YG" name="Timecode.h" compile="0" resource="0" file="Source/Timecode.h"/>
         <FILE id="SnHqOe" name="Timecode.cpp" compile="1" resource="0" file="Source/Timecode.cpp"/>
+        <FILE id="iHatt6" name="TimestampData.h" compile="0" resource="0" file="Source/TimestampData.h"/>
       </GROUP>
       <FILE id="aI7fmO" name="StaticTextSizeButton.hpp" compile="0" resource="0"
             file="Source/StaticTextSizeButton.hpp"/>

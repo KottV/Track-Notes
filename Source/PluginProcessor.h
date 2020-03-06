@@ -23,6 +23,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "TimestampData.h"
 
 
 //==============================================================================
@@ -84,7 +85,7 @@ public:
 
     bool stealthIsActivated;
 
-    Array<std::pair<double, String>> timestampData;
+    Array<TimestampData> timestampDataArray;
     
 private:
     

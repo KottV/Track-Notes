@@ -13,7 +13,7 @@
 
 //==============================================================================
 TimestampManager::TimestampManager (const unsigned int& width, const unsigned int& height)
-    : HEIGHT_OF_TIMESTAMP_WIDGETS (height / 6), WIDTH (width)
+    : HEIGHT_OF_TIMESTAMP_WIDGETS (height / 5), WIDTH (width)
 {
 }
 
@@ -23,8 +23,6 @@ TimestampManager::~TimestampManager()
 
 void TimestampManager::paint (Graphics& g)
 {
-    g.drawRect (getLocalBounds(), 1);
-    g.setColour (Colours::white);
 }
 
 void TimestampManager::resized()
@@ -68,12 +66,35 @@ void TimestampManager::deleteChild (Timestamp* child)
     resized();
 }
 
-Array<std::pair<double, String>> TimestampManager::getData() const
+Array<TimestampData> TimestampManager::getTimestampDataArray() const
 {
-    Array<std::pair<double, String>> data;
+    Array<TimestampData> timestampDataArray;
 
     for (auto& i : timestampOwnedArray)
-        data.add (std::pair<double, String>(i->getTimecodeInSeconds(), i->getNotes()));
+    {
+        TimestampData timestampData;
 
-    return data;
+        timestampData.timeInSeconds = i->getTimestampData().timeInSeconds;
+        timestampData.timecodeString = i->getTimestampData().timecodeString;
+        timestampData.notes = i->getTimestampData().notes;
+
+        timestampDataArray.add (timestampData);
+    }
+
+    return timestampDataArray;
+}
+
+int TimestampManager::getNumberOfTimestamps() const
+{
+    return timestampOwnedArray.size();
+}
+
+void TimestampManager::setNotes (unsigned int index, const String& notesString) const
+{
+    int last = timestampOwnedArray.size() - 1;
+
+    if (index > last)
+        index = last;
+
+    timestampOwnedArray[index]->setNotes (notesString);
 }

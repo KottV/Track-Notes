@@ -22,8 +22,8 @@ public:
 
     void buildTimecodeString (double timeInSeconds);
     String getTimecodeString() const;
-
     double getTimecodeInSeconds() const;
+
 private:
     String timecodeString;
 

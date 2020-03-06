@@ -28,7 +28,6 @@ public:
     inline static const String performersName = "performersName";
     inline static const String instrumentPlayed = "instrumentPlayed";
     inline static const String microphonesUsed = "microphonesUsed";
-    inline static const String timestampedNotes = "timestampedNotes";
     inline static const String generalNotes = "generalNotes";
 
     inline static const String imageOnePath = "imageOnePath";

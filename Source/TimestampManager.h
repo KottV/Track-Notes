@@ -39,7 +39,10 @@ public:
     void addTimestamp (const double& timeInSeconds, const String& notes = String());
     void deleteChild (Timestamp* child);
 
-    Array<std::pair<double, String>> getData() const;
+    Array<TimestampData> getTimestampDataArray() const;
+    int getNumberOfTimestamps() const;
+
+    void setNotes (unsigned int index, const String& notesString) const;
 
 private:
     OwnedArray<Timestamp> timestampOwnedArray;

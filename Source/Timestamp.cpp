@@ -21,12 +21,23 @@ Timestamp::Timestamp (const double& timeInSeconds, const String& notes)
 
     notesPtr.reset (new TextEditor);
     addAndMakeVisible (notesPtr.get());
+    notesPtr->setMultiLine (true);
+    notesPtr->setReturnKeyStartsNewLine (true);
+    notesPtr->setReadOnly (false);
+    notesPtr->setScrollbarsShown (true);
+    notesPtr->setCaretVisible (true);
+    notesPtr->setPopupMenuEnabled (true);
+    notesPtr->setColour (TextEditor::backgroundColourId, Colour (0xff565454));
+    notesPtr->setColour (TextEditor::highlightColourId, Colours::black);
+    notesPtr->setColour (TextEditor::outlineColourId, Colour (Colours::white));
     notesPtr->setText (notes);
 
     removeTimestampButtonPtr.reset (new TextButton ("Remove"));
-    removeTimestampButtonPtr->setLookAndFeel (staticTextSizeButtonPtr.get());
+//    removeTimestampButtonPtr->setLookAndFeel (staticTextSizeButtonPtr.get());
     removeTimestampButtonPtr->addListener (this);
     addAndMakeVisible (removeTimestampButtonPtr.get());
+    removeTimestampButtonPtr->setColour (TextButton::buttonColourId, Colour (0xff393939));
+    removeTimestampButtonPtr->setColour (TextButton::textColourOnId, Colours::white);
 }
 
 Timestamp::~Timestamp()
@@ -43,12 +54,6 @@ bool Timestamp::operator< (const Timestamp& TimestampRight) const
 
 void Timestamp::paint (Graphics& g)
 {
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
-
-    g.setColour (Colours::grey);
-    g.drawRect (getLocalBounds(), 1);
-
-    g.setColour (Colours::grey);
 }
 
 void Timestamp::resized()
@@ -88,12 +93,18 @@ void Timestamp::buttonClicked (Button* buttonThatWasClicked)
     }
 }
 
-double Timestamp::getTimecodeInSeconds() const
+TimestampData Timestamp::getTimestampData() const
 {
-    return timecode.getTimecodeInSeconds();
+    TimestampData timestampData;
+
+    timestampData.timeInSeconds = timecode.getTimecodeInSeconds();
+    timestampData.timecodeString = timecode.getTimecodeString();
+    timestampData.notes = notesPtr->getText();
+
+    return timestampData;
 }
 
-String Timestamp::getNotes() const
+void Timestamp::setNotes (const String& notesString)
 {
-    return notesPtr->getText();
+    notesPtr->setText (notesString);
 }

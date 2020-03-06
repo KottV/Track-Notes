@@ -89,8 +89,6 @@ private:
     void createImagePreviews();
     void scaleImageDimensionsIfTooLarge (int &imageWidtht, int &imageHeight);
     void setStealthModeState (const bool& isActivated);
-    void hideTextAndDisableEditor (TextEditor &textEditor);
-    void showTextAndEnableEditor (TextEditor &textEditor);
     void setFocusTabOrder();
     void startDemoTimer();
     void timerCallback() override;
@@ -123,7 +121,6 @@ private:
     std::unique_ptr<TextEditor> performersNameEditor;
     std::unique_ptr<TextEditor> instrumentPlayedEditor;
     std::unique_ptr<TextEditor> microphonesUsedEditor;
-    std::unique_ptr<TextEditor> timestampedNotesEditor;
     std::unique_ptr<TextEditor> generalNotesEditor;
 
 
