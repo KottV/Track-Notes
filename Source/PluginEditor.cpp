@@ -341,10 +341,18 @@ TrackNotesAudioProcessorEditor::TrackNotesAudioProcessorEditor (TrackNotesAudioP
     displayImageTwoButton->setLookAndFeel (staticTextSizeButtonPtr.get());
     removeImageTwoButton->setLookAndFeel (staticTextSizeButtonPtr.get());
 
-    timestampManagerPtr.reset (new TimestampManager);
+    viewportPtr.reset (new Viewport);
+    addAndMakeVisible (viewportPtr.get());
+    viewportPtr->setBounds (0, 200, 500, 175);
+
+    timestampManagerPtr.reset (new TimestampManager (
+        viewportPtr->getWidth(),
+        viewportPtr->getHeight())
+    );
     addAndMakeVisible (timestampManagerPtr.get());
-    
-    timestampManagerPtr->setBounds (0, 200, 500, 175);
+
+    viewportPtr->setViewedComponent (timestampManagerPtr.get(), false);
+    viewportPtr->setScrollBarsShown (true, false);
 
     // Set up stealth mode
     // Turn button into a toggle button
@@ -402,6 +410,7 @@ TrackNotesAudioProcessorEditor::~TrackNotesAudioProcessorEditor()
 
     staticTextSizeButtonPtr = nullptr;
     timestampManagerPtr = nullptr;
+    viewportPtr = nullptr;
 
     //[/Destructor]
 }
@@ -461,7 +470,7 @@ void TrackNotesAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked
         //[UserButtonCode_insertTimeStampButton] -- add your button handler code here..
 
         timestampManagerPtr->addTimestamp (processor.positionInformation.timeInSeconds);
-
+        
         //[/UserButtonCode_insertTimeStampButton]
     }
     else if (buttonThatWasClicked == displayImageOneButton.get())

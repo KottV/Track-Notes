@@ -74,6 +74,7 @@ private:
 
     std::unique_ptr<StaticTextSizeButton> staticTextSizeButtonPtr;
     std::unique_ptr<TimestampManager> timestampManagerPtr;
+    std::unique_ptr<Viewport> viewportPtr;
 
     TooltipWindow toolTipWindow;
 

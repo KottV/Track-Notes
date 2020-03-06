@@ -30,7 +30,7 @@ public:
 class TimestampManager    : public Component
 {
 public:
-    TimestampManager();
+    TimestampManager (const unsigned int& width, const unsigned int& height);
     ~TimestampManager();
 
     void paint (Graphics&) override;
@@ -43,6 +43,11 @@ public:
 private:
     OwnedArray<Timestamp> TimestampOwnedArray;
     TimestampElementComparator timestampElementComparator;
+
+    Rectangle<int> layoutRectangle;
+
+    const unsigned int HEIGHT_OF_TIMESTAMP_WIDGETS;
+    const unsigned int WIDTH;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimestampManager)
 };

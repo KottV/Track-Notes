@@ -12,7 +12,8 @@
 #include "TimestampManager.h"
 
 //==============================================================================
-TimestampManager::TimestampManager()
+TimestampManager::TimestampManager (const unsigned int& width, const unsigned int& height)
+    : HEIGHT_OF_TIMESTAMP_WIDGETS (height / 6), WIDTH (width)
 {
 }
 
@@ -22,13 +23,8 @@ TimestampManager::~TimestampManager()
 
 void TimestampManager::paint (Graphics& g)
 {
-//    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
-
-    g.setColour (Colours::grey);
     g.drawRect (getLocalBounds(), 1);
-
     g.setColour (Colours::white);
-    g.setFont (14.0f);
 }
 
 void TimestampManager::resized()
@@ -37,27 +33,27 @@ void TimestampManager::resized()
     fb.flexDirection = FlexBox::Direction::column;
 
     const float FLEX_VALUE = 2.5;
-    const unsigned int NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW = 6;
 
     for (auto it = TimestampOwnedArray.begin(); it != TimestampOwnedArray.end(); it++)
     {
         fb.items
             .add (FlexItem (**it)
             .withFlex (FLEX_VALUE)
-            .withMinHeight (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW)
-            .withMaxHeight (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW)
-            .withMaxWidth (getWidth()));
+            .withMinHeight (HEIGHT_OF_TIMESTAMP_WIDGETS)
+            .withMaxHeight (HEIGHT_OF_TIMESTAMP_WIDGETS)
+            .withMaxWidth (WIDTH));
         addAndMakeVisible (**it);
     }
 
-    Rectangle<int> layoutRectangle (
+    layoutRectangle.setBounds(
         0,
         0,
-        getWidth(),
-        (unsigned int) (getHeight() / NUMBER_OF_TIMESTAMP_WIDGETS_IN_VIEW) * TimestampOwnedArray.size()
+        WIDTH,
+        (unsigned int) (HEIGHT_OF_TIMESTAMP_WIDGETS) * TimestampOwnedArray.size()
     );
 
     fb.performLayout (layoutRectangle);
+    setSize (layoutRectangle.getWidth(), layoutRectangle.getHeight());
 }
 
 void TimestampManager::addTimestamp (const double& timeInSeconds)
