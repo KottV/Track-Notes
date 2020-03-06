@@ -36,11 +36,13 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
-    void addTimestamp (const double& timeInSeconds);
+    void addTimestamp (const double& timeInSeconds, const String& notes = String());
     void deleteChild (Timestamp* child);
 
+    Array<std::pair<double, String>> getData() const;
+
 private:
-    OwnedArray<Timestamp> TimestampOwnedArray;
+    OwnedArray<Timestamp> timestampOwnedArray;
     TimestampElementComparator timestampElementComparator;
 
     Rectangle<int> layoutRectangle;

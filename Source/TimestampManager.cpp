@@ -34,7 +34,7 @@ void TimestampManager::resized()
 
     const float FLEX_VALUE = 2.5;
 
-    for (auto it = TimestampOwnedArray.begin(); it != TimestampOwnedArray.end(); it++)
+    for (auto it = timestampOwnedArray.begin(); it != timestampOwnedArray.end(); it++)
     {
         fb.items
             .add (FlexItem (**it)
@@ -49,21 +49,31 @@ void TimestampManager::resized()
         0,
         0,
         WIDTH,
-        (unsigned int) (HEIGHT_OF_TIMESTAMP_WIDGETS) * TimestampOwnedArray.size()
+        (unsigned int) (HEIGHT_OF_TIMESTAMP_WIDGETS) * timestampOwnedArray.size()
     );
 
     fb.performLayout (layoutRectangle);
     setSize (layoutRectangle.getWidth(), layoutRectangle.getHeight());
 }
 
-void TimestampManager::addTimestamp (const double& timeInSeconds)
+void TimestampManager::addTimestamp (const double& timeInSeconds, const String& notes)
 {
-    TimestampOwnedArray.addSorted (timestampElementComparator, new Timestamp (timeInSeconds));
+    timestampOwnedArray.addSorted (timestampElementComparator, new Timestamp (timeInSeconds, notes));
     resized();
 }
 
 void TimestampManager::deleteChild (Timestamp* child)
 {
-    TimestampOwnedArray.removeObject (child);
+    timestampOwnedArray.removeObject (child);
     resized();
+}
+
+Array<std::pair<double, String>> TimestampManager::getData() const
+{
+    Array<std::pair<double, String>> data;
+
+    for (auto& i : timestampOwnedArray)
+        data.add (std::pair<double, String>(i->getTimecodeInSeconds(), i->getNotes()));
+
+    return data;
 }

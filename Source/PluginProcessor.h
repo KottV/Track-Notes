@@ -83,6 +83,8 @@ public:
     String microphonesUsedLabelString;
 
     bool stealthIsActivated;
+
+    Array<std::pair<double, String>> timestampData;
     
 private:
     

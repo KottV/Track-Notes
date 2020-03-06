@@ -21,7 +21,7 @@ class Timestamp    : public Component,
                            public Button::Listener
 {
 public:
-    Timestamp (const double& timeInSeconds);
+    Timestamp (const double& timeInSeconds, const String& notes = String());
     ~Timestamp();
 
     bool operator< (const Timestamp& TimestampRight) const;
@@ -31,9 +31,12 @@ public:
 
     void buttonClicked (Button* buttonThatWasClicked) override;
 
+    double getTimecodeInSeconds() const;
+    String getNotes() const;
+
 private:
-    std::unique_ptr<Label> timestampLabelPtr;
-    std::unique_ptr<TextEditor> timestampNotesPtr;
+    std::unique_ptr<Label> timecodeLabelPtr;
+    std::unique_ptr<TextEditor> notesPtr;
     std::unique_ptr<TextButton> removeTimestampButtonPtr;
 
     std::unique_ptr<StaticTextSizeButton> staticTextSizeButtonPtr;

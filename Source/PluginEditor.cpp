@@ -304,6 +304,19 @@ TrackNotesAudioProcessorEditor::TrackNotesAudioProcessorEditor (TrackNotesAudioP
     timestampedNotesEditor->setFont (fontSize);
     generalNotesEditor->setFont (fontSize);
 
+    viewportPtr.reset (new Viewport);
+    addAndMakeVisible (viewportPtr.get());
+    viewportPtr->setBounds (0, 200, 500, 175);
+
+    timestampManagerPtr.reset (new TimestampManager (
+        viewportPtr->getWidth(),
+        viewportPtr->getHeight())
+    );
+    addAndMakeVisible (timestampManagerPtr.get());
+
+    viewportPtr->setViewedComponent (timestampManagerPtr.get(), false);
+    viewportPtr->setScrollBarsShown (true, false);
+
     getDataFromProcessor();
 
     // Reset button names to image name (this doesn't work in standalone
@@ -340,19 +353,6 @@ TrackNotesAudioProcessorEditor::TrackNotesAudioProcessorEditor (TrackNotesAudioP
     loadImageTwoButton->setLookAndFeel (staticTextSizeButtonPtr.get());
     displayImageTwoButton->setLookAndFeel (staticTextSizeButtonPtr.get());
     removeImageTwoButton->setLookAndFeel (staticTextSizeButtonPtr.get());
-
-    viewportPtr.reset (new Viewport);
-    addAndMakeVisible (viewportPtr.get());
-    viewportPtr->setBounds (0, 200, 500, 175);
-
-    timestampManagerPtr.reset (new TimestampManager (
-        viewportPtr->getWidth(),
-        viewportPtr->getHeight())
-    );
-    addAndMakeVisible (timestampManagerPtr.get());
-
-    viewportPtr->setViewedComponent (timestampManagerPtr.get(), false);
-    viewportPtr->setScrollBarsShown (true, false);
 
     // Set up stealth mode
     // Turn button into a toggle button
@@ -826,7 +826,13 @@ void TrackNotesAudioProcessorEditor::getDataFromProcessor()
     microphonesUsedLabel->setText (processor.microphonesUsedLabelString, dontSendNotification);
 
     // Buttons
-    stealthModeToggle->setToggleState(processor.stealthIsActivated, dontSendNotification);
+    stealthModeToggle->setToggleState (processor.stealthIsActivated, dontSendNotification);
+
+    // Timestamp Widget
+    Array<std::pair<double, String>> timestampData = processor.timestampData;
+
+    for (auto& i : timestampData)
+        timestampManagerPtr->addTimestamp (i.first, i.second);
 }
 
 void TrackNotesAudioProcessorEditor::saveDataToProcessor()
@@ -850,6 +856,9 @@ void TrackNotesAudioProcessorEditor::saveDataToProcessor()
 
     // Buttons
     processor.stealthIsActivated = stealthModeToggle->getToggleState();
+
+    // Timestamp Widget
+    processor.timestampData = timestampManagerPtr->getData();
 }
 
 void TrackNotesAudioProcessorEditor::labelTextChanged (Label* labelThatHasChanged)

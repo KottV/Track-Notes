@@ -59,3 +59,8 @@ String Timecode::getTimecodeString() const
 {
     return timecodeString;
 }
+
+double Timecode::getTimecodeInSeconds() const
+{
+    return timeInSeconds;
+}

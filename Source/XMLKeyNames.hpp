@@ -39,6 +39,10 @@ public:
     inline static const String microphonesUsedLabel = "microphonesUsedLabel";
 
     inline static const String stealthIsActivated = "stealthIsActivated";
+
+    inline static const String numberOfTimestamps = "numberOfTimestamps";
+    inline static const String timestampsTimeInSecondsBaseName = "timestampsTimeInSecondsBaseName";
+    inline static const String timestampsNotesBaseName = "timestampsNotesBaseName";
 };
 
 #endif /* XMLKeyNames_hpp */

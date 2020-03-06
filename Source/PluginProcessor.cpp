@@ -174,6 +174,15 @@ void TrackNotesAudioProcessor::getStateInformation (MemoryBlock& destData)
 
     xml.setAttribute (XMLKeyNames::stealthIsActivated, stealthIsActivated);
 
+    // Save Timestamp widget data
+    xml.setAttribute (XMLKeyNames::numberOfTimestamps, timestampData.size());
+
+    for (int i = 0; i < timestampData.size(); i++)
+    {
+        xml.setAttribute (XMLKeyNames::timestampsTimeInSecondsBaseName + String(i), timestampData[i].first);
+        xml.setAttribute (XMLKeyNames::timestampedNotes + String(i), timestampData[i].second);
+    }
+
     // Use this helper function to stuff it into the binary blob and return it..
     copyXmlToBinary (xml, destData);
 }
@@ -210,6 +219,17 @@ void TrackNotesAudioProcessor::setStateInformation (const void* data, int sizeIn
 
             if (imageTwoPath.exists())
                 imageTwo = ImageCache::getFromFile (imageTwoPath);
+
+            // Load Timestamp widget data
+            int numberOfTimestamps = xml->getIntAttribute (XMLKeyNames::numberOfTimestamps);
+
+            for (int i = 0; i < numberOfTimestamps; i++)
+            {
+                std::pair<double, String> pair;
+                pair.first = xml->getDoubleAttribute (XMLKeyNames::timestampsTimeInSecondsBaseName + String(i));
+                pair.second = xml->getStringAttribute (XMLKeyNames::timestampedNotes + String(i));
+                timestampData.add (pair);
+            }
         }
     }
 }
